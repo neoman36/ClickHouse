@@ -136,6 +136,7 @@ def _prepare(token):
             commit_ci_status = CI.GH.get_commit_status_by_name(
                 token=token,
                 commit_sha=commit,
+                # handle old name for old releases
                 status_name=(CI.JobNames.BUILD_CHECK, "ClickHouse build check"),
             )
             commit_sha = commit

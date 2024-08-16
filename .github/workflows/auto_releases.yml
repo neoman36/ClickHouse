@@ -19,13 +19,11 @@ on:
 
 jobs:
   AutoReleaseInfo:
-    runs-on: [self-hosted, style-checker-aarch64]
+    runs-on: [self-hosted, release-maker]
     outputs:
       data: ${{ steps.info.outputs.AUTO_RELEASE_PARAMS }}
       dry_run: ${{ steps.info.outputs.DRY_RUN }}
     steps:
-      - name: Debug Info
-        uses: ./.github/actions/debug
       - name: Set envs
         run: |
           cat >> "$GITHUB_ENV" << 'EOF'
@@ -36,6 +34,10 @@ jobs:
           echo "DRY_RUN=true" >> "$GITHUB_ENV"
       - name: Check out repository code
         uses: ClickHouse/checkout@v1
+        with:
+          fetch-depth: 0  # full history needed
+      - name: Debug Info
+        uses: ./.github/actions/debug
       - name: Prepare Info
         id: info
         run: |
